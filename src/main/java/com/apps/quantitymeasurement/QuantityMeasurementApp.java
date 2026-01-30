@@ -12,15 +12,15 @@ public class QuantityMeasurementApp {
         }
         @Override
         public boolean equals(Object obj){
-           if (this == obj) {
-               return true;
-           }
-           if (obj == null ||getClass()!= obj.getClass() ){
-               return false;
-           }
-           Feet other = (Feet) obj;
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null ||getClass()!= obj.getClass() ){
+                return false;
+            }
+            Feet other = (Feet) obj;
 
-           return Double.compare(this.value,other.value)==0;
+            return Double.compare(this.value,other.value)==0;
         }
     }
     public  static class Inches{
