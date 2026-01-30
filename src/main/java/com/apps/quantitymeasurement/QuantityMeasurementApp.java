@@ -60,39 +60,36 @@ public class QuantityMeasurementApp {
         System.out.println("3. Inches check ");
         System.out.print("Choose on: ");
         int ip= sc.nextInt();
-        switch (ip){
-            case 1:
-            {
+        switch (ip) {
+            case 1: {
                 System.out.println("Enter 1st value in feet: ");
-                double v1= sc.nextDouble();
+                double v1 = sc.nextDouble();
                 System.out.println("Enter 2nd value in feet: ");
-                double v2= sc.nextDouble();
-                demonstrateFeetEquality(v1,v2);
+                double v2 = sc.nextDouble();
+                demonstrateFeetEquality(v1, v2);
                 break;
             }
-            case 2:
-            {
+            case 2: {
                 System.out.println("Enter value in feet: ");
-                double v1= sc.nextDouble();
+                double v1 = sc.nextDouble();
                 System.out.println("Enter value in inches: ");
-                double v2= sc.nextDouble();
-                double convertInches= v1 * 12;
+                double v2 = sc.nextDouble();
+                double convertInches = v1 * 12;
                 System.out.println(convertInches == v2);
                 break;
             }
-            case 3:
-            {
+            case 3: {
                 System.out.println("Enter 1st value in Inch: ");
-                double v1= sc.nextDouble();
+                double v1 = sc.nextDouble();
                 System.out.println("Enter 2nd value in Inch: ");
-                double v2= sc.nextDouble();
-                demonstrateInchesEquality(v1,v2);
+                double v2 = sc.nextDouble();
+                demonstrateInchesEquality(v1, v2);
                 break;
             }
-            default:
+            default: {
                 System.out.println();
                 break;
+            }
         }
-
     }
 }
