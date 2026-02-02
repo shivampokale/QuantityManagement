@@ -5,7 +5,10 @@ public class Length {
     private LengthUnit unit;
 
     public enum LengthUnit{
-        FEET(12.0), INCHES(1.0);
+        FEET(12.0),
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
 
         private final double conversionFactor;
 
@@ -20,8 +23,14 @@ public class Length {
         this.value=value;
         this.unit=unit;
     }
-    private double convertToBaseUnit(){
+    private double convertToInches(){
+
         return this.value * this.unit.getConversionFactor();
+    }
+    public boolean compare(Length other){
+        return Double.compare(
+                this.convertToInches(),
+                other.convertToInches() )==0;
     }
     @Override
     public boolean equals(Object obj){
@@ -31,10 +40,7 @@ public class Length {
         if (obj == null ||getClass()!= obj.getClass() ){
             return false;
         }
-        Length other = (Length) obj;
-
-        return Double.compare(
-                this.convertToBaseUnit(),
-                other.convertToBaseUnit() )==0;
+        Length length = (Length) obj;
+        return this.compare(length);
     }
 }
