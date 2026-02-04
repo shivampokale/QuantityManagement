@@ -71,10 +71,16 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
+    public void testNaNValueThrows() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Length(Double.NaN, Length.LengthUnit.FEET));
+    }
+    @Test
     public void testNaNValueThrows_TryCatchLogic() {
         try {
             new Length(Double.NaN, Length.LengthUnit.FEET);
         } catch (IllegalArgumentException expected) {
+
         }
     }
 }
