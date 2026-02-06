@@ -2,58 +2,80 @@ package com.apps.quantitymeasurement;
 
 public class Length{
 
-    private final double value;
-    private final LengthUnit unit;
+    private double value;
+    private LengthUnit unit;
 
-    public Length(double value, LengthUnit unit) {
-        this.value = value;
-        this.unit = unit;
-    }
-
-    public enum LengthUnit {
-        FEET(12.0),          // 1 foot = 12 inches
-        INCHES(1.0),         // Base unit
-        YARDS(36.0),         // 1 yard = 36 inches
-        CENTIMETERS(0.393701); // 1 cm = 0.393701 inches
+    public enum LengthUnit{
+        FEET(12.0),
+        INCHES(1.0),
+        YARD(36.0),
+        CM(0.393701);
 
         private final double conversionFactor;
-        LengthUnit(double conversionFactor) {
+        LengthUnit(double conversionFactor){
             this.conversionFactor = conversionFactor;
         }
-
-        public double getConversionFactor() {
+        public double getConversionFactor(){
             return conversionFactor;
         }
     }
 
-    private double convertToInches() {
-        return value * unit.getConversionFactor();
+    public Length(double value, LengthUnit unit){
+        this.value = value;
+        this.unit = unit;
     }
 
-    public Length convertTo(LengthUnit targetUnit) {
-        double inches = convertToInches();
-        double convertedValue = inches / targetUnit.getConversionFactor();
-        return new Length(convertedValue, targetUnit);
+    // convert to inches
+    private double convertToBaseUnit(){
+        return this.value * this.unit.getConversionFactor();
     }
 
-    public boolean compare(Length other) {
-        return Double.compare(
-                this.convertToInches(),
-                other.convertToInches() )==0;
-    }
+/*    public static double convertToBaseUnit(Length source){
+
+        if (source == null) {
+            throw new IllegalArgumentException("Source Length cannot be null");
+        }
+        return source.value*source.unit.getConversionFactor();
+    }*/
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Length length = (Length) obj;
-        return this.compare(length);
+    public String toString() {
+        return String.format("%.2f %s", value, unit);
     }
 
-    public double getValue() {
-        return value;
+    public Length convertTo(LengthUnit toUnit){
+
+        double inches = convertToBaseUnit();
+        double convertedValue=inches/toUnit.getConversionFactor();
+        return new Length(convertedValue, toUnit);
     }
-    public LengthUnit getUnit() {
-        return unit;
+
+    public static Length demonstrateLengthConversion(Length fromUnit ,LengthUnit toUnit){
+        return fromUnit.convertTo(toUnit);
+    }
+    @Override
+    public  boolean equals(Object obj){
+        boolean boolResult = false;
+
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Length)) return false;
+
+        // typecasting
+        Length val2 = (Length) obj;
+        double value1 = this.convertToBaseUnit();
+        double value2 = val2.convertToBaseUnit();
+        int result = Double.compare(value1,value2);
+
+        if(result == 0){
+            boolResult = true;
+        }
+        return boolResult;
+    }
+
+    public static Length Addition(Length Length1, Length Length2){
+        Length convertedLength2 = demonstrateLengthConversion(Length2,Length1.unit);
+        double combinedValue = Length1.value + convertedLength2.value;
+        return new Length(combinedValue,Length1.unit);
     }
 }
