@@ -2,76 +2,90 @@ package com.apps.quantitymeasurement;
 
 public class Length{
 
-    private double value;
-    private LengthUnit unit;
-
-    public enum LengthUnit{
-        FEET(12.0),
-        INCHES(1.0),
-        YARD(36.0),
-        CM(1/2.54);
-
-        private final double conversionFactor;
-        LengthUnit(double conversionFactor){
-            this.conversionFactor = conversionFactor;
-        }
-        public double getConversionFactor(){
-            return conversionFactor;
-        }
-    }
-
+    double value;
+    LengthUnit unit;
     public Length(double value, LengthUnit unit){
         this.value = value;
         this.unit = unit;
     }
 
     // convert to inches
-    double convertToBaseUnit(){
-        return this.value * this.unit.getConversionFactor();
+    public double convertToBaseUnit(){
+        return this.unit.toBaseUnit(this.value);
     }
-
+    public static double convertToBaseUnit(Length source){
+        if (source == null) {
+            throw new IllegalArgumentException("Source Length cannot be null");
+        }
+        return source.unit.toBaseUnit(source.value);
+    }
 
     @Override
     public String toString() {
         return String.format("%.2f %s", value, unit);
     }
 
-    public Length convertTo(LengthUnit toUnit){
+    public static  Length ConvertTo(Length source, LengthUnit toUnit){
+        if (source == null) {
+            throw new IllegalArgumentException("Source Length cannot be null");
+        }
+        if (toUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        // convert to base inches - multiply conversion factor
+        Double baseUnit = convertToBaseUnit(source);
+        // convert to target  - divide by conversion factor
+        Double TargetValue = toUnit.fromBaseUnit(baseUnit);
 
-        double inches = convertToBaseUnit();
-        double result = inches / toUnit.getConversionFactor();
-
-        return new Length(result, toUnit);
+        return new Length(TargetValue, toUnit);
     }
 
-    public static Length demonstrateLengthConversion(Length fromUnit ,LengthUnit toUnit){
-        return fromUnit.convertTo(toUnit);
+    public static Length DemonstrateLengthConversion(Length source, LengthUnit toUnit){
+        Length convertedLength = ConvertTo(source,toUnit);
+        return convertedLength;
     }
+
     @Override
     public  boolean equals(Object obj){
+        boolean boolResult = false;
 
+        if (obj == null) return false;
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!(obj instanceof Length)) return false;
 
         // typecasting
-        Length other = (Length) obj;
-        return Double.compare(this.convertToBaseUnit(), other.convertToBaseUnit()) == 0;
+        Length val2 = (Length) obj;
+
+        double value1 = this.convertToBaseUnit();
+        double value2 = val2.convertToBaseUnit();
+
+        int result = Double.compare(value1,value2);
+        if(result == 0){
+            boolResult = true;
+        }
+        return boolResult;
     }
 
-    public static Length addition(Length Length1, Length Length2){
-        Length convertedLength2 = demonstrateLengthConversion(Length2,Length1.unit);
+    // feet inch - feet
+    // addition with no target value - converted to length1 unit
+    public static Length Addition(Length Length1, Length Length2){
+        Length convertedLength2 = DemonstrateLengthConversion(Length2,Length1.unit);
         double combinedValue = Length1.value + convertedLength2.value;
         return new Length(combinedValue,Length1.unit);
     }
-    public static Length addition(Length length1, Length length2, LengthUnit targetUnit){
-        if (length1 == null || length2 == null) {
+
+    // addition with target unit  - addition of 2 length converted to a target unit
+    public static Length Addition(Length Length1, Length Length2, LengthUnit TargetUnit){
+        if (Length1 == null || Length2 == null) {
             throw new IllegalArgumentException("Length inputs cannot be null");
         }
-        if (targetUnit == null) {
+        if (TargetUnit == null) {
             throw new IllegalArgumentException("Target unit cannot be null");
         }
-        Length AdditionLength = addition(length1,length2);
-        Length convertedLength = demonstrateLengthConversion(AdditionLength, targetUnit);
-        return convertedLength;
+        Length AdditionLength = Addition(Length1,Length2);
+        Length ConvertedLength = DemonstrateLengthConversion(AdditionLength, TargetUnit);
+        return ConvertedLength;
     }
+
 }
+
