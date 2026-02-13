@@ -9,6 +9,7 @@ public class Length{
         this.unit = unit;
     }
 
+
     // convert to inches
     public double convertToBaseUnit(){
         return this.unit.toBaseUnit(this.value);
@@ -33,16 +34,15 @@ public class Length{
             throw new IllegalArgumentException("Target unit cannot be null");
         }
         // convert to base inches - multiply conversion factor
-        Double baseUnit = convertToBaseUnit(source);
+        double baseUnit = convertToBaseUnit(source);
         // convert to target  - divide by conversion factor
-        Double TargetValue = toUnit.fromBaseUnit(baseUnit);
+        double TargetValue = toUnit.fromBaseUnit(baseUnit);
 
         return new Length(TargetValue, toUnit);
     }
 
     public static Length DemonstrateLengthConversion(Length source, LengthUnit toUnit){
-        Length convertedLength = ConvertTo(source,toUnit);
-        return convertedLength;
+        return ConvertTo(source,toUnit);
     }
 
     @Override
@@ -51,10 +51,9 @@ public class Length{
 
         if (obj == null) return false;
         if (this == obj) return true;
-        if (!(obj instanceof Length)) return false;
+        if (!(obj instanceof Length val2)) return false;
 
         // typecasting
-        Length val2 = (Length) obj;
 
         double value1 = this.convertToBaseUnit();
         double value2 = val2.convertToBaseUnit();
@@ -83,8 +82,7 @@ public class Length{
             throw new IllegalArgumentException("Target unit cannot be null");
         }
         Length AdditionLength = Addition(Length1,Length2);
-        Length ConvertedLength = DemonstrateLengthConversion(AdditionLength, TargetUnit);
-        return ConvertedLength;
+        return DemonstrateLengthConversion(AdditionLength, TargetUnit);
     }
 
 }

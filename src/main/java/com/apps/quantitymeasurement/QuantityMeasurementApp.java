@@ -14,20 +14,20 @@ public class QuantityMeasurementApp {
 
         // conversion of length unit
         Length res = Length.DemonstrateLengthConversion(len1, com.apps.quantitymeasurement.LengthUnit.YARD);
-        System.out.println(len1.toString() + " is " + res.toString());
+        System.out.println(len1 + " is " + res);
 
         // addition of 2 lengths
         System.out.println();
         System.out.println("Addition of 2 lengths:");
         Length result = Addition(len1, len2);
-        System.out.println("Result = " + result.toString());
-        System.out.println(len1.toString() + " + " + len2.toString() + " is : " + result.toString());
+        System.out.println("Result = " + result);
+        System.out.println(len1 + " + " + len2 + " is : " + result);
 
         // addition of 2 length with target Unit
         System.out.println();
         System.out.println("Addition of 2 lengths with target unit:");
         Length resultWithTargetUnit = Addition(len1, len2, com.apps.quantitymeasurement.LengthUnit.CM);
-        System.out.println("Result = " + resultWithTargetUnit.toString());
-        System.out.println(len1.toString() + " + " + len2.toString() + " is : " + resultWithTargetUnit.toString());
+        System.out.println("Result = " + resultWithTargetUnit);
+        System.out.println(len1 + " + " + len2 + " is : " + resultWithTargetUnit);
     }
 }
